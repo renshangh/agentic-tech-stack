@@ -4,182 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Agentic Engineering Tech Stack</title>
-  <meta name="description" content="My Agentic Engineering Tech Stack — interactive Notion-style dashboard with search, tags, collapsible sections, and theme toggle." />
+  <meta name="description" content="Interactive Notion-style dashboard of my Agentic Engineering Tech Stack." />
   <style>
     :root {
-      --bg-color: #0f1117;
-      --text-color: #e4e6eb;
-      --muted-color: #b7bbc7;
-      --card-bg: #1a1c23;
-      --accent: #00e0b8;
-      --accent-light: #72f5e3;
-      --shadow: rgba(0, 0, 0, 0.25);
+      --bg: #0f1117; --fg: #e4e6eb; --muted:#b7bbc7; --card:#1a1c23;
+      --accent:#00e0b8; --accent2:#72f5e3; --shadow: rgba(0,0,0,.25);
     }
     [data-theme='light'] {
-      --bg-color: #f5f7fa;
-      --text-color: #1c1e21;
-      --muted-color: #3c4048;
-      --card-bg: #ffffff;
-      --accent: #009f8e;
-      --accent-light: #4fd1c5;
-      --shadow: rgba(0, 0, 0, 0.12);
+      --bg:#f5f7fa; --fg:#1c1e21; --muted:#3c4048; --card:#fff;
+      --accent:#009f8e; --accent2:#4fd1c5; --shadow: rgba(0,0,0,.12);
     }
-    * { box-sizing: border-box; }
-    body {
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      margin: 0;
-      padding: 2rem 1.25rem 4rem;
-      transition: background 0.3s ease, color 0.3s ease;
-      line-height: 1.6;
-    }
-    header {
-      max-width: 1100px;
-      margin: 0 auto 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-    h1 {
-      color: var(--accent);
-      margin: 0.2rem 0 0.4rem;
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      letter-spacing: 0.25px;
-    }
-    .sub {
-      color: var(--muted-color);
-      font-size: 0.95rem;
-      margin-top: 0.2rem;
-    }
-    .controls {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-    button, .chip {
-      background: var(--accent);
-      color: var(--bg-color);
-      border: none;
-      border-radius: 0.6rem;
-      padding: 0.55rem 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform .06s ease, background .2s ease;
-      box-shadow: 0 4px 10px var(--shadow);
-    }
-    button:hover, .chip:hover { background: var(--accent-light); }
-    button:active { transform: translateY(1px); }
-    #search {
-      width: 100%;
-      max-width: 1100px;
-      margin: 0.6rem auto 1rem;
-      display: block;
-      padding: 0.8rem 0.9rem;
-      border-radius: 0.65rem;
-      border: 1px solid transparent;
-      background: var(--card-bg);
-      color: var(--text-color);
-      font-size: 1rem;
-      outline: none;
-      transition: border .2s ease, box-shadow .2s ease;
-      box-shadow: 0 4px 10px var(--shadow);
-    }
-    #search::placeholder { color: var(--muted-color); }
-    #search:focus { border-color: var(--accent-light); box-shadow: 0 0 0 4px rgba(114,245,227,0.15); }
-    .tags {
-      max-width: 1100px;
-      margin: 0 auto 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .chip {
-      background: var(--card-bg);
-      color: var(--text-color);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .chip.active {
-      background: var(--accent);
-      color: var(--bg-color);
-      border-color: transparent;
-    }
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-    section {
-      background: var(--card-bg);
-      padding: 0.8rem 1rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 10px var(--shadow);
-    }
-    summary {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--accent);
-      cursor: pointer;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.35rem 0.2rem;
-      user-select: none;
-    }
-    summary::marker { content: ''; }
-    .caret { color: var(--accent-light); font-size: 0.9rem; opacity: 0.9; }
-    details[open] .caret { transform: rotate(180deg); }
-    .group {
-      margin: 0.4rem 0 0.6rem;
-      border-top: 1px dashed rgba(255,255,255,0.12);
-      padding-top: 0.6rem;
-    }
-    .group h3 {
-      color: var(--accent-light);
-      margin: 0.1rem 0 0.35rem;
-      font-size: 1.05rem;
-    }
-    ul {
-      margin: 0.2rem 0 0.6rem 0;
-      padding-left: 1.1rem;
-    }
-    li {
-      margin: 0.2rem 0;
-    }
-    li::marker { color: var(--accent-light); }
-    .note {
-      color: var(--muted-color);
-      font-size: 0.95rem;
-      margin: 0.15rem 0 0.4rem 0;
-    }
-    footer {
-      max-width: 1100px;
-      margin: 2rem auto;
-      color: var(--muted-color);
-      font-size: 0.9rem;
-      text-align: center;
-    }
-    .toolbar {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      max-width: 1100px;
-      margin: 0 auto 1rem;
-    }
-    @media (min-width: 720px) {
-      .toolbar { flex-direction: row; justify-content: space-between; align-items: center; }
-    }
+    *{box-sizing:border-box}
+    body{background:var(--bg);color:var(--fg);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:2rem 1rem 4rem;transition:.25s}
+    header{max-width:1100px;margin:0 auto 1rem;display:flex;gap:.75rem;align-items:center;justify-content:space-between}
+    h1{color:var(--accent);margin:.2rem 0;font-size:clamp(1.3rem,4vw,2rem)}
+    .sub{color:var(--muted);font-size:.95rem}
+    .controls{display:flex;gap:.5rem}
+    button,.chip{background:var(--accent);color:var(--bg);border:none;border-radius:.6rem;padding:.55rem .8rem;font-weight:700;cursor:pointer;box-shadow:0 4px 10px var(--shadow);transition:.2s}
+    button:hover,.chip:hover{background:var(--accent2)}
+    .toolbar{max-width:1100px;margin:0 auto 1rem;display:grid;gap:.6rem}
+    #search{padding:.8rem .9rem;border-radius:.65rem;border:1px solid transparent;background:var(--card);color:var(--fg);box-shadow:0 4px 10px var(--shadow)}
+    #search::placeholder{color:var(--muted)}
+    .tags{display:flex;flex-wrap:wrap;gap:.5rem}
+    .chip{background:var(--card);color:var(--fg);border:1px solid rgba(255,255,255,.08)}
+    .chip.active{background:var(--accent);color:var(--bg);border-color:transparent}
+    main{max-width:1100px;margin:0 auto;display:grid;gap:1rem}
+    section{background:var(--card);padding:.8rem 1rem;border-radius:1rem;box-shadow:0 4px 10px var(--shadow)}
+    summary{font-weight:800;color:var(--accent);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+    .caret{color:var(--accent2)}
+    .group{margin:.6rem 0 0;border-top:1px dashed rgba(255,255,255,.12);padding-top:.6rem}
+    .group h3{color:var(--accent2);margin:.2rem 0}
+    ul{margin:.2rem 0 .6rem 1.1rem}
+    li::marker{color:var(--accent2)}
+    .meta{color:var(--muted);font-size:.9rem}
+    .panel{max-width:1100px;margin:1rem auto;background:var(--card);padding:1rem;border-radius:1rem;box-shadow:0 4px 10px var(--shadow)}
+    .panel h3{margin-top:0;color:var(--accent)}
+    .row{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem}
+    .row input,.row select,.row textarea{width:100%;padding:.55rem;border-radius:.5rem;border:1px solid rgba(255,255,255,.1);background:var(--bg);color:var(--fg)}
+    .row textarea{grid-column:1/-1;min-height:70px}
+    @media (max-width:720px){.row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <header>
     <div>
       <h1>🧠 My Agentic Engineering Tech Stack</h1>
-      <div class="sub">Interactive, Notion-style dashboard — search, tags, collapsible sections, and theme toggle.</div>
+      <div class="sub">Search • Tag filter • Collapsible sections • Light/Dark (persistent) • Add/Import items</div>
     </div>
     <div class="controls">
       <button id="theme">🌙 Light Mode</button>
@@ -188,7 +58,7 @@
   </header>
 
   <div class="toolbar">
-    <input id="search" type="text" placeholder="🔍 Search tools, categories, or notes..." />
+    <input id="search" placeholder="🔍 Search products, features, categories..." />
     <div class="tags" id="tags">
       <span class="chip" data-tag="AI">AI</span>
       <span class="chip" data-tag="Agents">Agents</span>
@@ -198,7 +68,6 @@
       <span class="chip" data-tag="API">API</span>
       <span class="chip" data-tag="Deployment">Deployment</span>
       <span class="chip" data-tag="Infra">Infra</span>
-      <span class="chip" data-tag="Self-Hosting">Self-Hosting</span>
       <span class="chip" data-tag="Observability">Observability</span>
       <span class="chip" data-tag="Auth">Auth</span>
       <span class="chip" data-tag="Payments">Payments</span>
@@ -206,7 +75,35 @@
       <span class="chip" data-tag="Browser">Browser</span>
       <span class="chip" data-tag="Search">Search</span>
       <span class="chip" data-tag="Graph">Graph</span>
+      <span class="chip" data-tag="Self-Hosting">Self-Hosting</span>
     </div>
+  </div>
+
+  <!-- Add/Import Panel -->
+  <div class="panel">
+    <h3>➕ Add or Import Items</h3>
+    <div class="row">
+      <select id="add-category">
+        <option>Core Infrastructure</option>
+        <option>Full Stack Development</option>
+        <option>General AI Agents</option>
+        <option>R&D Agents</option>
+        <option>Web Automation Agents</option>
+        <option>Deployment & Infrastructure</option>
+        <option>Self-Hosting Options</option>
+      </select>
+      <input id="add-sub" placeholder="Subcategory (e.g., Database, API Framework)" />
+      <input id="add-product" placeholder="Product name (e.g., Pydantic)" />
+      <input id="add-alts" placeholder="Alternatives (comma-separated)" />
+      <textarea id="add-features" placeholder="Features/notes"></textarea>
+      <button id="add-btn">Add Item</button>
+    </div>
+    <details class="group">
+      <summary>📥 Bulk import (paste one per line: Product — Features; Alternatives: a,b,c)</summary>
+      <textarea id="bulk" placeholder="Example:\nPydantic — Data validation and settings management; Alternatives: Marshmallow\nReact — Component-based UI library; Alternatives: Vue, Svelte"></textarea>
+      <div style="margin-top:.6rem"><button id="bulk-btn">Import Lines</button></div>
+      <div class="meta">Tip: Imported items go to the section currently expanded or to “Full Stack Development / General” if none.</div>
+    </details>
   </div>
 
   <main id="grid">
@@ -214,39 +111,10 @@
     <section data-tags="Infra Database Vector Caching API">
       <details open>
         <summary>⚙️ Core Infrastructure <span class="caret">▼</span></summary>
-
-        <div class="group">
-          <h3>🗄️ Database</h3>
-          <ul>
-            <li>PostgreSQL — primary structured data store</li>
-            <li>PgVector — vector extension for similarity search</li>
-            <li>Neon / Supabase / Timescale — cloud-native alternatives for scale & realtime</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🧠 Caching</h3>
-          <ul>
-            <li>Redis — caching & pub/sub backbone</li>
-            <li>Upstash — serverless Redis</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🤖 AI Coding</h3>
-          <ul>
-            <li>Claude Code / Cursor / Continue / Windsurf — AI-assisted coding</li>
-            <li>OpenAI / Anthropic APIs — foundation LLM endpoints</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🧩 Prototyping</h3>
-          <ul>
-            <li>Replit / Observable / Jupyter — fast prototyping & visualization</li>
-            <li>Langflow — visual builder for agent pipelines</li>
-          </ul>
-        </div>
+        <div class="group"><h3>🗄️ Database</h3><ul id="core-db"></ul></div>
+        <div class="group"><h3>🧠 Caching</h3><ul id="core-cache"></ul></div>
+        <div class="group"><h3>🤖 AI Coding</h3><ul id="core-aicode"></ul></div>
+        <div class="group"><h3>🧩 Prototyping</h3><ul id="core-proto"></ul></div>
       </details>
     </section>
 
@@ -254,55 +122,13 @@
     <section data-tags="Frontend API Database Auth Payments Observability">
       <details>
         <summary>💻 Full Stack Development <span class="caret">▼</span></summary>
-
-        <div class="group">
-          <h3>⚡ API Framework</h3>
-          <ul>
-            <li>FastAPI — async Python API</li>
-            <li>Express.js — lightweight Node.js backend</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🗄️ Database & ORM</h3>
-          <ul>
-            <li>PostgreSQL — unified backend storage</li>
-            <li>Prisma — ORM with schema management & typing</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🔐 Authentication</h3>
-          <ul>
-            <li>Supabase Auth — simple JWT-based auth</li>
-            <li>Auth0 / Clerk / Firebase Auth — enterprise identity providers</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🎨 Frontend Libraries</h3>
-          <ul>
-            <li>React / Next.js / Vue — UI frameworks</li>
-            <li>Tailwind CSS — utility-first styling</li>
-            <li>Radix UI / Shadcn UI — headless components</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🧩 Build / App Starters</h3>
-          <ul>
-            <li>Vite — fast build tool</li>
-            <li>Streamlit / Gradio / Lovable — no/low-code AI app frameworks</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>💳 Payments & Monitoring</h3>
-          <ul>
-            <li>Stripe — payment processing</li>
-            <li>Sentry / LogRocket — observability and error monitoring</li>
-          </ul>
-        </div>
+        <div class="group"><h3>⚡ API Framework</h3><ul id="fs-api"></ul></div>
+        <div class="group"><h3>🗄️ Database & ORM</h3><ul id="fs-orm"></ul></div>
+        <div class="group"><h3>📦 Data Models & Validation</h3><ul id="fs-models"></ul></div>
+        <div class="group"><h3>🔐 Authentication</h3><ul id="fs-auth"></ul></div>
+        <div class="group"><h3>🎨 Frontend Libraries</h3><ul id="fs-frontend"></ul></div>
+        <div class="group"><h3>🧩 Build / App Starters</h3><ul id="fs-build"></ul></div>
+        <div class="group"><h3>💳 Payments & Monitoring</h3><ul id="fs-paymon"></ul></div>
       </details>
     </section>
 
@@ -310,34 +136,10 @@
     <section data-tags="AI Agents Observability">
       <details>
         <summary>🤖 General AI Agents <span class="caret">▼</span></summary>
-
-        <div class="group">
-          <h3>🧩 AI Agent Frameworks</h3>
-          <ul>
-            <li>PyAutoGen / CrewAI / BabyAGI / LangGraph — agent orchestration & planning</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🧬 Multi-Agent Frameworks</h3>
-          <ul>
-            <li>LangChain / AutoGPT / AgentVerse — multi-agent coordination</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🧰 Agent Tooling</h3>
-          <ul>
-            <li>OpenDevin / MCP Servers / Semantic Kernel — tool/skill integration</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🔍 Agent Observability</h3>
-          <ul>
-            <li>LangSmith / Helicone / Phoenix — tracing, evals, and telemetry</li>
-          </ul>
-        </div>
+        <div class="group"><h3>🧩 AI Agent Frameworks</h3><ul id="ga-frameworks"></ul></div>
+        <div class="group"><h3>🧬 Multi-Agent Frameworks</h3><ul id="ga-multi"></ul></div>
+        <div class="group"><h3>🧰 Agent Tooling</h3><ul id="ga-tools"></ul></div>
+        <div class="group"><h3>🔍 Agent Observability</h3><ul id="ga-obs"></ul></div>
       </details>
     </section>
 
@@ -345,63 +147,14 @@
     <section data-tags="AI R&D Vector Graph Database Search">
       <details>
         <summary>🔬 R&D Agents <span class="caret">▼</span></summary>
-
-        <div class="group">
-          <h3>📁 File Extraction & Chunking</h3>
-          <ul>
-            <li>Unstructured / LangChain / LlamaIndex — document parsing & embeddings</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🌐 Website Data Extraction</h3>
-          <ul>
-            <li>Crawl4AI / Playwright / Apify — scraping & structured extraction</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🧮 Vector Databases</h3>
-          <ul>
-            <li>Postgres (PgVector) — unified store</li>
-            <li>Pinecone / Weaviate / Milvus — dedicated vector search DBs</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🧠 Long-Term Memory</h3>
-          <ul>
-            <li>MongoDB — persistent agent memory</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🔗 Graph Databases</h3>
-          <ul>
-            <li>Neo4j / ArangoDB — relationship reasoning</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>📚 Knowledge Graph Frameworks</h3>
-          <ul>
-            <li>Grakn / GraphGPT / NetworkX — knowledge extraction & linking</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🧪 RAG Evaluation</h3>
-          <ul>
-            <li>Ragas / DeepEval / TruLens — retrieval QA & eval frameworks</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🌍 Web Search</h3>
-          <ul>
-            <li>Brave / Bing / Tavily / SerpAPI — live data retrieval</li>
-          </ul>
-        </div>
+        <div class="group"><h3>📁 File Extraction & Chunking</h3><ul id="rd-extract"></ul></div>
+        <div class="group"><h3>🌐 Website Data Extraction</h3><ul id="rd-web"></ul></div>
+        <div class="group"><h3>🧮 Vector Databases</h3><ul id="rd-vector"></ul></div>
+        <div class="group"><h3>🧠 Long-Term Memory</h3><ul id="rd-memory"></ul></div>
+        <div class="group"><h3>🔗 Graph Databases</h3><ul id="rd-graph"></ul></div>
+        <div class="group"><h3>📚 Knowledge Graph Frameworks</h3><ul id="rd-kg"></ul></div>
+        <div class="group"><h3>🧪 RAG Evaluation</h3><ul id="rd-rag"></ul></div>
+        <div class="group"><h3>🌍 Web Search</h3><ul id="rd-search"></ul></div>
       </details>
     </section>
 
@@ -409,27 +162,9 @@
     <section data-tags="AI Agents Browser Automation Search">
       <details>
         <summary>🌐 Web Automation Agents <span class="caret">▼</span></summary>
-
-        <div class="group">
-          <h3>🧭 AI Browser Control</h3>
-          <ul>
-            <li>Browserbase / Puppeteer / Selenium — automated web interactions</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>⚙️ Browser Automation</h3>
-          <ul>
-            <li>Playwright / Crawl4AI — headless browsing & pipelines</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🧲 Social Scraping</h3>
-          <ul>
-            <li>Apify / Instaloader / Twint — social/public data collection</li>
-          </ul>
-        </div>
+        <div class="group"><h3>🧭 AI Browser Control</h3><ul id="wa-control"></ul></div>
+        <div class="group"><h3>⚙️ Browser Automation</h3><ul id="wa-automation"></ul></div>
+        <div class="group"><h3>🧲 Social Scraping</h3><ul id="wa-social"></ul></div>
       </details>
     </section>
 
@@ -437,48 +172,12 @@
     <section data-tags="Deployment Infra Testing Observability">
       <details>
         <summary>🚀 Deployment & Infrastructure <span class="caret">▼</span></summary>
-
-        <div class="group">
-          <h3>☁️ Deployment Platforms</h3>
-          <ul>
-            <li>Render / Railway / Fly.io — managed app hosting</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🧭 Virtual / GPU Platforms</h3>
-          <ul>
-            <li>RunPod / DigitalOcean / HuggingFace Spaces — cloud GPU & compute</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🐳 Containerization</h3>
-          <ul>
-            <li>Docker / Podman — containerized environments</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🔄 CI/CD</h3>
-          <ul>
-            <li>GitHub Actions — workflows for testing & deploy</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🧪 Testing</h3>
-          <ul>
-            <li>PyTest / Jest — Python & JS testing</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🤖 AI Code Review</h3>
-          <ul>
-            <li>CodeRabbit / Codium / Aider — AI PR/code review</li>
-          </ul>
-        </div>
+        <div class="group"><h3>☁️ Deployment Platforms</h3><ul id="di-deploy"></ul></div>
+        <div class="group"><h3>🧭 Virtual / GPU Platforms</h3><ul id="di-virtual"></ul></div>
+        <div class="group"><h3>🐳 Containerization</h3><ul id="di-contain"></ul></div>
+        <div class="group"><h3>🔄 CI/CD</h3><ul id="di-cicd"></ul></div>
+        <div class="group"><h3>🧪 Testing</h3><ul id="di-test"></ul></div>
+        <div class="group"><h3>🤖 AI Code Review</h3><ul id="di-review"></ul></div>
       </details>
     </section>
 
@@ -486,126 +185,321 @@
     <section data-tags="Self-Hosting Infra Vector Security">
       <details>
         <summary>🏠 Self-Hosting Options <span class="caret">▼</span></summary>
-
-        <div class="group">
-          <h3>💽 Local LLM Platforms</h3>
-          <ul>
-            <li>Open WebUI / Ollama — run & manage local LLMs</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🔍 Local Embeddings & Search</h3>
-          <ul>
-            <li>Sentence Transformers / ChromaDB / Qdrant — local semantic search</li>
-          </ul>
-        </div>
-
-        <div class="group">
-          <h3>🔐 HTTPS/TLS & Reverse Proxy</h3>
-          <ul>
-            <li>Caddy / Nginx — secure serving & SSL termination</li>
-          </ul>
-        </div>
+        <div class="group"><h3>💽 Local LLM Platforms</h3><ul id="sh-llm"></ul></div>
+        <div class="group"><h3>🔍 Local Embeddings & Search</h3><ul id="sh-embed"></ul></div>
+        <div class="group"><h3>🔐 HTTPS/TLS & Reverse Proxy</h3><ul id="sh-proxy"></ul></div>
       </details>
     </section>
   </main>
 
-  <footer>
-    Built for quick iteration. Tip: press <strong>/</strong> to focus search. Your theme & filters persist automatically.
-  </footer>
+  <footer class="meta">Press <b>/</b> to focus search • Filters & theme persist • Use the Add/Import panel to include anything missing from the PNG.</footer>
 
   <script>
-    // --- Theme persistence ---
     const themeBtn = document.getElementById('theme');
     const resetBtn = document.getElementById('reset');
     const search = document.getElementById('search');
     const chips = Array.from(document.querySelectorAll('.chip'));
     const sections = Array.from(document.querySelectorAll('main section'));
+    const STORAGE = 'agentic-stack:v2';
 
-    const STORAGE_KEY = 'agentic-stack:v1';
-    const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const state = JSON.parse(localStorage.getItem(STORAGE) || '{}');
 
-    function applyState() {
-      // theme
-      if (state.theme === 'light') {
-        document.body.setAttribute('data-theme', 'light');
-        themeBtn.textContent = '🌑 Dark Mode';
-      } else {
-        document.body.removeAttribute('data-theme');
-        themeBtn.textContent = '🌙 Light Mode';
-      }
-      // search
+    function applyState(){
+      if(state.theme==='light'){document.body.setAttribute('data-theme','light');themeBtn.textContent='🌑 Dark Mode';}
+      else{document.body.removeAttribute('data-theme');themeBtn.textContent='🌙 Light Mode';}
       search.value = state.query || '';
-      // tags
-      const activeTags = new Set(state.tags || []);
-      chips.forEach(chip => {
-        chip.classList.toggle('active', activeTags.has(chip.dataset.tag));
-      });
+      const active = new Set(state.tags || []);
+      chips.forEach(c=>c.classList.toggle('active', active.has(c.dataset.tag)));
       filter();
     }
-
-    function persist() {
-      const active = chips.filter(c => c.classList.contains('active')).map(c => c.dataset.tag);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        theme: document.body.getAttribute('data-theme') === 'light' ? 'light' : 'dark',
-        query: search.value.trim(),
-        tags: active
-      }));
+    function persist(){
+      const active = chips.filter(c=>c.classList.contains('active')).map(c=>c.dataset.tag);
+      localStorage.setItem(STORAGE, JSON.stringify({theme:document.body.getAttribute('data-theme')==='light'?'light':'dark', query:search.value.trim(), tags:active}));
     }
-
-    themeBtn.addEventListener('click', () => {
-      const isLight = document.body.getAttribute('data-theme') === 'light';
-      if (isLight) {
-        document.body.removeAttribute('data-theme');
-        themeBtn.textContent = '🌙 Light Mode';
-      } else {
-        document.body.setAttribute('data-theme', 'light');
-        themeBtn.textContent = '🌑 Dark Mode';
-      }
+    themeBtn.addEventListener('click', ()=>{
+      const isLight = document.body.getAttribute('data-theme')==='light';
+      if(isLight){document.body.removeAttribute('data-theme');themeBtn.textContent='🌙 Light Mode';}
+      else{document.body.setAttribute('data-theme','light');themeBtn.textContent='🌑 Dark Mode';}
       persist();
     });
-
-    resetBtn.addEventListener('click', () => {
-      // clear search and tags
-      search.value = '';
-      chips.forEach(c => c.classList.remove('active'));
-      filter();
-      persist();
+    resetBtn.addEventListener('click', ()=>{
+      search.value=''; chips.forEach(c=>c.classList.remove('active')); filter(); persist();
     });
+    chips.forEach(chip=>chip.addEventListener('click', ()=>{chip.classList.toggle('active');filter();persist();}));
+    document.addEventListener('keydown', e=>{ if(e.key==='/' && document.activeElement!==search){e.preventDefault();search.focus();}});
+    search.addEventListener('input', ()=>{filter();persist();});
 
-    // Chip toggle
-    chips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        chip.classList.toggle('active');
-        filter();
-        persist();
-      });
-    });
-
-    // Search input + keyboard focus with '/'
-    document.addEventListener('keydown', (e) => {
-      if (e.key === '/' && document.activeElement !== search) {
-        e.preventDefault();
-        search.focus();
-      }
-    });
-    search.addEventListener('input', () => { filter(); persist(); });
-
-    function filter() {
+    function filter(){
       const q = search.value.toLowerCase();
-      const activeTags = chips.filter(c => c.classList.contains('active')).map(c => c.dataset.tag);
-
-      sections.forEach(sec => {
+      const act = chips.filter(c=>c.classList.contains('active')).map(c=>c.dataset.tag.toLowerCase());
+      sections.forEach(sec=>{
         const text = sec.innerText.toLowerCase();
         const matchesSearch = !q || text.includes(q);
-        const tags = (sec.getAttribute('data-tags') || '').toLowerCase().split(/\s+/).filter(Boolean);
-        const matchesTags = activeTags.length === 0 || activeTags.every(t => tags.includes(t.toLowerCase()));
+        const tags = (sec.getAttribute('data-tags')||'').toLowerCase().split(/\s+/).filter(Boolean);
+        const matchesTags = act.length===0 || act.every(t=>tags.includes(t));
         sec.style.display = matchesSearch && matchesTags ? 'block' : 'none';
       });
     }
 
-    // Initialize
+    // ---------- DATA (split items, each product explicit) ----------
+    const data = {
+      "core-db": [
+        {p:"PostgreSQL", f:"Primary structured data store.", a:[]},
+        {p:"PgVector", f:"Vector extension for similarity search.", a:["FAISS"]},
+        {p:"Neon", f:"Serverless Postgres alternative.", a:["Supabase","Timescale"]},
+        {p:"Supabase", f:"Managed Postgres with auth & storage.", a:["Neon","Timescale"]},
+        {p:"Timescale", f:"Time-series Postgres.", a:["InfluxDB"]}
+      ],
+      "core-cache": [
+        {p:"Redis", f:"Caching & pub/sub backbone.", a:["KeyDB","Valkey"]},
+        {p:"Upstash", f:"Serverless Redis.", a:["Redis Enterprise"]}
+      ],
+      "core-aicode": [
+        {p:"Claude Code", f:"AI-assisted coding & reasoning.", a:["Copilot","Codeium"]},
+        {p:"Cursor", f:"AI pair-programming IDE.", a:["Windsurf","Continue"]},
+        {p:"Continue", f:"Local-first IDE AI assistant.", a:["Cursor","Windsurf"]},
+        {p:"Windsurf", f:"Autonomous dev environment.", a:["Cursor","Continue"]},
+        {p:"OpenAI API", f:"LLM endpoints.", a:["Anthropic API"]},
+        {p:"Anthropic API", f:"LLM endpoints.", a:["OpenAI API"]}
+      ],
+      "core-proto": [
+        {p:"Replit", f:"Quick prototypes.", a:["StackBlitz"]},
+        {p:"Observable", f:"Data notebooks & viz.", a:["Jupyter"]},
+        {p:"Jupyter", f:"Interactive notebooks.", a:["Observable"]},
+        {p:"Langflow", f:"Visual agent pipeline builder.", a:["Flowise"]}
+      ],
+
+      "fs-api": [
+        {p:"FastAPI", f:"Modern async Python API framework.", a:["Flask","Django REST"]},
+        {p:"Express.js", f:"Minimal Node.js API framework.", a:["Fastify","Koa"]}
+      ],
+      "fs-orm": [
+        {p:"Prisma", f:"Type-safe ORM & schema migrations.", a:["SQLAlchemy","Sequelize"]}
+      ],
+      "fs-models": [
+        {p:"Pydantic", f:"Python data validation & settings.", a:["Marshmallow","attrs"]},
+        {p:"SQLAlchemy", f:"Python ORM & DB toolkit.", a:["Prisma"]},
+        {p:"Alembic", f:"DB migrations for SQLAlchemy.", a:["Prisma Migrate"]}
+      ],
+      "fs-auth": [
+        {p:"Supabase Auth", f:"JWT-based auth.", a:["Clerk","Auth0","Firebase Auth"]},
+        {p:"Auth0", f:"Enterprise identity.", a:["Clerk","Cognito"]},
+        {p:"Clerk", f:"User management & sessions.", a:["Auth0","Firebase Auth"]},
+        {p:"Firebase Auth", f:"Auth SDKs.", a:["Auth0","Clerk"]}
+      ],
+      "fs-frontend": [
+        {p:"React", f:"Component-based UI library.", a:["Vue","Svelte"]},
+        {p:"Next.js", f:"React meta-framework.", a:["Remix","Nuxt"]},
+        {p:"Vue", f:"Progressive UI framework.", a:["React","Svelte"]},
+        {p:"Tailwind CSS", f:"Utility-first CSS.", a:["Bootstrap"]},
+        {p:"Radix UI", f:"Accessible headless components.", a:["Headless UI"]},
+        {p:"Shadcn UI", f:"Composable Radix-based components.", a:["MUI"]}
+      ],
+      "fs-build": [
+        {p:"Vite", f:"Fast dev server & bundler.", a:["Webpack","esbuild"]},
+        {p:"Streamlit", f:"Python app starter.", a:["Gradio","Panel"]},
+        {p:"Gradio", f:"Python UI for ML demos.", a:["Streamlit"]},
+        {p:"Lovable", f:"No/low-code AI apps.", a:["Bubble"]}
+      ],
+      "fs-paymon": [
+        {p:"Stripe", f:"Payments.", a:["Braintree"]},
+        {p:"Sentry", f:"Error monitoring.", a:["Rollbar"]},
+        {p:"LogRocket", f:"Frontend session replay.", a:["FullStory"]}
+      ],
+
+      "ga-frameworks": [
+        {p:"PyAutoGen", f:"Conversational agents framework.", a:["CrewAI","LangGraph"]},
+        {p:"CrewAI", f:"Team-of-agents orchestration.", a:["PyAutoGen","AutoGPT"]},
+        {p:"BabyAGI", f:"Task-driven autonomous loop.", a:["AutoGPT"]},
+        {p:"LangGraph", f:"Graph-based agent workflows.", a:["LangChain Agents"]}
+      ],
+      "ga-multi": [
+        {p:"LangChain", f:"Agent tools & chains.", a:["Semantic Kernel"]},
+        {p:"AutoGPT", f:"Autonomous agents.", a:["BabyAGI"]},
+        {p:"AgentVerse", f:"Multi-agent sandbox.", a:["CrewAI"]}
+      ],
+      "ga-tools": [
+        {p:"OpenDevin", f:"Developer agent tooling.", a:["Devin (Cognition)"]},
+        {p:"MCP Servers", f:"Model Context Protocol tool servers.", a:["LangChain Tools"]},
+        {p:"Semantic Kernel", f:".NET/JS agent skills.", a:["LangChain"]}
+      ],
+      "ga-obs": [
+        {p:"LangSmith", f:"Tracing & evals.", a:["Phoenix","Helicone"]},
+        {p:"Helicone", f:"LLM telemetry & cost.", a:["LangSmith"]},
+        {p:"Phoenix", f:"Observability for LLM apps.", a:["LangSmith"]}
+      ],
+
+      "rd-extract": [
+        {p:"Unstructured", f:"File parsing & chunking.", a:["Textract"]},
+        {p:"LangChain", f:"Loaders & text-splitters.", a:["LlamaIndex"]},
+        {p:"LlamaIndex", f:"Indexing & RAG pipelines.", a:["LangChain"]}
+      ],
+      "rd-web": [
+        {p:"Crawl4AI", f:"Structured crawling.", a:["Scrapy"]},
+        {p:"Playwright", f:"Headless browser automation.", a:["Puppeteer"]},
+        {p:"Apify", f:"Scraping platform.", a:["Zyte"]}
+      ],
+      "rd-vector": [
+        {p:"Postgres (PgVector)", f:"Unified store for embeddings.", a:["Pinecone","Weaviate"]},
+        {p:"Pinecone", f:"Managed vector DB.", a:["Weaviate","Milvus"]},
+        {p:"Weaviate", f:"Open-source vector DB.", a:["Milvus","Qdrant"]},
+        {p:"Milvus", f:"High-performance vector DB.", a:["Weaviate","Qdrant"]}
+      ],
+      "rd-memory": [
+        {p:"MongoDB", f:"Long-term memory store.", a:["Postgres JSONB"]}
+      ],
+      "rd-graph": [
+        {p:"Neo4j", f:"Graph database.", a:["ArangoDB"]},
+        {p:"ArangoDB", f:"Multi-model DB (graph/doc).", a:["Neo4j"]}
+      ],
+      "rd-kg": [
+        {p:"Grakn", f:"Knowledge graph engine.", a:["Neo4j"]},
+        {p:"GraphGPT", f:"Graph extraction from text.", a:["spaCy + KG"]},
+        {p:"NetworkX", f:"Graph algorithms (Python).", a:["igraph"]}
+      ],
+      "rd-rag": [
+        {p:"Ragas", f:"RAG evaluation.", a:["DeepEval","TruLens"]},
+        {p:"DeepEval", f:"LLM testing.", a:["Ragas"]},
+        {p:"TruLens", f:"Eval & feedback.", a:["Ragas"]}
+      ],
+      "rd-search": [
+        {p:"Brave", f:"Web search API.", a:["Bing","Google CSE"]},
+        {p:"Bing", f:"Search API.", a:["Brave","SerpAPI"]},
+        {p:"Tavily", f:"Reasoning-centric search.", a:["SerpAPI"]},
+        {p:"SerpAPI", f:"Search meta-API.", a:["Tavily"]}
+      ],
+
+      "wa-control": [
+        {p:"Browserbase", f:"Remote browser control.", a:["Selenium Grid"]},
+        {p:"Puppeteer", f:"Chrome automation.", a:["Playwright"]},
+        {p:"Selenium", f:"Cross-browser automation.", a:["Playwright"]}
+      ],
+      "wa-automation": [
+        {p:"Playwright", f:"Headless browsing workflows.", a:["Puppeteer"]},
+        {p:"Crawl4AI", f:"Crawl automation.", a:["Scrapy"]}
+      ],
+      "wa-social": [
+        {p:"Apify", f:"Social scrapers.", a:["Zyte"]},
+        {p:"Instaloader", f:"Instagram scraping.", a:[]},
+        {p:"Twint", f:"Twitter/X scraping.", a:["snscrape"]}
+      ],
+
+      "di-deploy": [
+        {p:"Render", f:"Managed PaaS.", a:["Railway","Fly.io"]},
+        {p:"Railway", f:"PaaS for containers.", a:["Render","Fly.io"]},
+        {p:"Fly.io", f:"Global edge apps.", a:["Railway"]}
+      ],
+      "di-virtual": [
+        {p:"RunPod", f:"GPU instances.", a:["Paperspace"]},
+        {p:"DigitalOcean", f:"Simple cloud VMs.", a:["AWS Lightsail"]},
+        {p:"HuggingFace Spaces", f:"Hosted ML apps.", a:["Streamlit Cloud"]}
+      ],
+      "di-contain": [
+        {p:"Docker", f:"Containers.", a:["Podman"]},
+        {p:"Podman", f:"Daemonless containers.", a:["Docker"]}
+      ],
+      "di-cicd": [
+        {p:"GitHub Actions", f:"CI/CD workflows.", a:["GitLab CI"]}
+      ],
+      "di-test": [
+        {p:"PyTest", f:"Python testing.", a:["unittest"]},
+        {p:"Jest", f:"JS testing.", a:["Vitest","Mocha"]}
+      ],
+      "di-review": [
+        {p:"CodeRabbit", f:"AI code reviews.", a:["Aider","Codium"]},
+        {p:"Codium", f:"AI PR reviews.", a:["CodeRabbit"]},
+        {p:"Aider", f:"Chat-driven coding.", a:["CodeRabbit"]}
+      ],
+
+      "sh-llm": [
+        {p:"Open WebUI", f:"Local LLM UI.", a:["text-generation-webui"]},
+        {p:"Ollama", f:"Local model runner.", a:["LM Studio"]}
+      ],
+      "sh-embed": [
+        {p:"Sentence Transformers", f:"Local embeddings.", a:["OpenAI Embeddings"]},
+        {p:"ChromaDB", f:"Local vector store.", a:["Qdrant"]},
+        {p:"Qdrant", f:"Vector DB.", a:["ChromaDB"]}
+      ],
+      "sh-proxy": [
+        {p:"Caddy", f:"Automatic HTTPS.", a:["Nginx"]},
+        {p:"Nginx", f:"Reverse proxy.", a:["Caddy"]}
+      ]
+    };
+
+    function li({p,f,a}){
+      const alt = a && a.length ? `<div class='meta'>Alternatives: ${a.join(', ')}</div>` : '';
+      const feat = f ? `<div class='meta'>${f}</div>` : '';
+      return `<li><b>${p}</b>${feat}${alt}</li>`;
+    }
+    function mount(){
+      for(const id in data){
+        const ul = document.getElementById(id);
+        if(!ul) continue;
+        ul.innerHTML = data[id].map(li).join('');
+      }
+    }
+
+    // Add single item
+    document.getElementById('add-btn').addEventListener('click', ()=>{
+      const cat = document.getElementById('add-category').value;
+      const sub = (document.getElementById('add-sub').value || 'General').trim();
+      const product = (document.getElementById('add-product').value || '').trim();
+      const alts = (document.getElementById('add-alts').value || '').split(',').map(s=>s.trim()).filter(Boolean);
+      const feat = (document.getElementById('add-features').value || '').trim();
+      if(!product) return alert('Product name required');
+      const idMap = {
+        "Core Infrastructure": {"Database":"core-db","Caching":"core-cache","AI Coding":"core-aicode","Prototyping":"core-proto","General":"core-proto"},
+        "Full Stack Development": {"API Framework":"fs-api","Database & ORM":"fs-orm","Data Models & Validation":"fs-models","Authentication":"fs-auth","Frontend Libraries":"fs-frontend","Build / App Starters":"fs-build","Payments & Monitoring":"fs-paymon","General":"fs-build"},
+        "General AI Agents": {"AI Agent Frameworks":"ga-frameworks","Multi-Agent Frameworks":"ga-multi","Agent Tooling":"ga-tools","Agent Observability":"ga-obs","General":"ga-frameworks"},
+        "R&D Agents": {"File Extraction & Chunking":"rd-extract","Website Data Extraction":"rd-web","Vector Databases":"rd-vector","Long-Term Memory":"rd-memory","Graph Databases":"rd-graph","Knowledge Graph Frameworks":"rd-kg","RAG Evaluation":"rd-rag","Web Search":"rd-search","General":"rd-extract"},
+        "Web Automation Agents": {"AI Browser Control":"wa-control","Browser Automation":"wa-automation","Social Scraping":"wa-social","General":"wa-automation"},
+        "Deployment & Infrastructure": {"Deployment Platforms":"di-deploy","Virtual / GPU Platforms":"di-virtual","Containerization":"di-contain","CI/CD":"di-cicd","Testing":"di-test","AI Code Review":"di-review","General":"di-deploy"},
+        "Self-Hosting Options": {"Local LLM Platforms":"sh-llm","Local Embeddings & Search":"sh-embed","HTTPS/TLS & Reverse Proxy":"sh-proxy","General":"sh-llm"}
+      };
+      const target = (idMap[cat] && idMap[cat][sub]) || (idMap[cat] && idMap[cat]['General']);
+      if(!target) return alert('Unknown category/subcategory; please choose one of the listed options.');
+      data[target] = data[target] || [];
+      data[target].push({p:product,f:feat,a:alts});
+      document.getElementById(target).insertAdjacentHTML('beforeend', li({p:product,f:feat,a:alts}));
+      document.getElementById('add-product').value='';document.getElementById('add-alts').value='';document.getElementById('add-features').value='';
+    });
+
+    // Bulk import
+    document.getElementById('bulk-btn').addEventListener('click', ()=>{
+      const txt = document.getElementById('bulk').value.trim();
+      if(!txt) return;
+      const openDetails = Array.from(document.querySelectorAll('main details')).find(d=>d.open);
+      const section = openDetails ? openDetails.parentElement : null;
+      let defaultTarget = 'fs-build';
+      if(section){
+        const map = {
+          "⚙️ Core Infrastructure":"core-proto",
+          "💻 Full Stack Development":"fs-build",
+          "🤖 General AI Agents":"ga-frameworks",
+          "🔬 R&D Agents":"rd-extract",
+          "🌐 Web Automation Agents":"wa-automation",
+          "🚀 Deployment & Infrastructure":"di-deploy",
+          "🏠 Self-Hosting Options":"sh-llm"
+        };
+        const title = openDetails.querySelector('summary')?.innerText?.trim();
+        defaultTarget = map[title] || defaultTarget;
+      }
+      txt.split(/\n/).forEach(line=>{
+        const m = line.split('—'); // long dash
+        const n = m[0].trim();
+        const rest = m[1] ? m[1].trim() : '';
+        const altMatch = rest.match(/Alternatives:\s*(.*)$/i);
+        const feats = rest.replace(/Alternatives:.*$/i,'').trim();
+        const alts = altMatch ? altMatch[1].split(',').map(s=>s.trim()).filter(Boolean) : [];
+        data[defaultTarget] = data[defaultTarget] || [];
+        data[defaultTarget].push({p:n,f:feats,a:alts});
+        document.getElementById(defaultTarget).insertAdjacentHTML('beforeend', li({p:n,f:feats,a:alts}));
+      });
+      document.getElementById('bulk').value='';
+    });
+
+    // Mount starters
+    mount();
     applyState();
   </script>
 </body>
