@@ -599,8 +599,8 @@
       sections.forEach(sec => {
         const text = sec.innerText.toLowerCase();
         const matchesSearch = !q || text.includes(q);
-        const tags = (sec.getAttribute('data-tags') || '').split(/\\s+/).filter(Boolean);
-        const matchesTags = activeTags.length === 0 || activeTags.every(t => tags.includes(t));
+        const tags = (sec.getAttribute('data-tags') || '').toLowerCase().split(/\s+/).filter(Boolean);
+        const matchesTags = activeTags.length === 0 || activeTags.every(t => tags.includes(t.toLowerCase()));
         sec.style.display = matchesSearch && matchesTags ? 'block' : 'none';
       });
     }
