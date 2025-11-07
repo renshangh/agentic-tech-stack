@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agentic Engineering Tech Stack Dashboard</title>
+  <style>
+    :root {
+      --bg-color: #0f1117;
+      --text-color: #e4e6eb;
+      --card-bg: #1a1c23;
+      --accent: #00e0b8;
+      --accent-light: #72f5e3;
+    }
+    [data-theme='light'] {
+      --bg-color: #f5f7fa;
+      --text-color: #1c1e21;
+      --card-bg: #ffffff;
+      --accent: #009f8e;
+      --accent-light: #4fd1c5;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 2rem;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    h1 {
+      color: var(--accent);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    section {
+      background: var(--card-bg);
+      padding: 1rem 1.5rem;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease;
+    }
+    summary {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--accent);
+      cursor: pointer;
+      margin-bottom: 0.5rem;
+    }
+    details[open] summary::after {
+      content: ' ▲';
+    }
+    details summary::after {
+      content: ' ▼';
+      font-size: 0.8rem;
+      color: var(--accent-light);
+    }
+    ul {
+      list-style: none;
+      padding-left: 1rem;
+    }
+    li::before {
+      content: '⚡ ';
+      color: var(--accent);
+    }
+    .subcategory h3 {
+      color: var(--accent-light);
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+    }
+    #searchBar {
+      width: 100%;
+      padding: 0.7rem;
+      border-radius: 0.5rem;
+      border: none;
+      background: var(--card-bg);
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .tag {
+      background: var(--accent);
+      color: var(--bg-color);
+      border-radius: 0.5rem;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .tag:hover {
+      background: var(--accent-light);
+    }
+    #themeToggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent);
+      color: var(--bg-color);
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    #themeToggle:hover {
+      background: var(--accent-light);
+    }
+  </style>
+</head>
+<body>
+  <button id="themeToggle">🌙 Light Mode</button>
+  <h1>🧠 My Agentic Engineering Tech Stack</h1>
+
+  <input type="text" id="searchBar" placeholder="🔍 Search tools or categories..." />
+
+  <div class="tags">
+    <div class="tag" onclick="filterTag('AI')">AI</div>
+    <div class="tag" onclick="filterTag('Database')">Database</div>
+    <div class="tag" onclick="filterTag('Deployment')">Deployment</div>
+    <div class="tag" onclick="filterTag('Frontend')">Frontend</div>
+    <div class="tag" onclick="filterTag('Agents')">Agents</div>
+    <div class="tag" onclick="filterTag('Infrastructure')">Infrastructure</div>
+  </div>
+
+  <section data-tags="Infrastructure Database">
+    <details>
+      <summary>⚙️ Core Infrastructure</summary>
+      <div class="subcategory">
+        <h3>🗄️ Database</h3>
+        <ul>
+          <li>PostgreSQL — Primary structured data store</li>
+          <li>PgVector — Vector extension for similarity search</li>
+          <li>Neon / Supabase / Timescale — Cloud-native scalable alternatives</li>
+        </ul>
+      </div>
+      <div class="subcategory">
+        <h3>🧠 Caching</h3>
+        <ul>
+          <li>Redis — Caching and pub/sub backbone</li>
+          <li>Upstash — Serverless Redis alternative</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section data-tags="Frontend API Development">
+    <details>
+      <summary>💻 Full Stack Development</summary>
+      <div class="subcategory">
+        <h3>⚡ API Framework</h3>
+        <ul>
+          <li>FastAPI — Modern async backend</li>
+          <li>Express.js — Lightweight Node.js alternative</li>
+        </ul>
+      </div>
+      <div class="subcategory">
+        <h3>🎨 Frontend Libraries</h3>
+        <ul>
+          <li>React / Next.js / Vue — UI frameworks</li>
+          <li>Tailwind CSS / Shadcn UI — Styling and components</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section data-tags="Agents AI">
+    <details>
+      <summary>🤖 General AI Agents</summary>
+      <div class="subcategory">
+        <h3>🧩 Frameworks</h3>
+        <ul>
+          <li>LangChain / CrewAI / AutoGPT — Agent orchestration</li>
+          <li>Semantic Kernel / MCP Servers — Tool integration</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section data-tags="R&D AI Data">
+    <details>
+      <summary>🔬 R&D Agents</summary>
+      <div class="subcategory">
+        <h3>📁 File & Data</h3>
+        <ul>
+          <li>Unstructured / LlamaIndex — Document parsing</li>
+          <li>PgVector / Pinecone — Vector storage</li>
+        </ul>
+      </div>
+      <div class="subcategory">
+        <h3>🌍 Web Search</h3>
+        <ul>
+          <li>Brave / Tavily / SerpAPI — Real-time web queries</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section data-tags="Deployment Infrastructure">
+    <details>
+      <summary>🚀 Deployment & Infrastructure</summary>
+      <div class="subcategory">
+        <h3>☁️ Deployment</h3>
+        <ul>
+          <li>Render / Railway / Fly.io — Managed hosting</li>
+        </ul>
+      </div>
+      <div class="subcategory">
+        <h3>🐳 Containerization</h3>
+        <ul>
+          <li>Docker / Podman — Containers for reproducibility</li>
+        </ul>
+      </div>
+      <div class="subcategory">
+        <h3>🔄 CI/CD</h3>
+        <ul>
+          <li>GitHub Actions — Testing & deployment automation</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section data-tags="Self-Hosting Infrastructure">
+    <details>
+      <summary>🏠 Self-Hosting Options</summary>
+      <div class="subcategory">
+        <h3>💽 Local Platforms</h3>
+        <ul>
+          <li>Open WebUI / Ollama — Local LLM management</li>
+          <li>ChromaDB / Qdrant — Local vector search</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <script>
+    const searchBar = document.getElementById('searchBar');
+    const sections = document.querySelectorAll('section');
+    const themeToggle = document.getElementById('themeToggle');
+
+    // Search functionality
+    searchBar.addEventListener('input', function() {
+      const term = this.value.toLowerCase();
+      sections.forEach(section => {
+        section.style.display = section.innerText.toLowerCase().includes(term) ? 'block' : 'none';
+      });
+    });
+
+    // Tag filter
+    function filterTag(tag) {
+      sections.forEach(section => {
+        section.style.display = section.dataset.tags.includes(tag) ? 'block' : 'none';
+      });
+    }
+
+    // Theme toggle
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.body.getAttribute('data-theme');
+      if (currentTheme === 'light') {
+        document.body.removeAttribute('data-theme');
+        themeToggle.textContent = '🌙 Light Mode';
+      } else {
+        document.body.setAttribute('data-theme', 'light');
+        themeToggle.textContent = '🌑 Dark Mode';
+      }
+    });
+  </script>
+</body>
+</html>
