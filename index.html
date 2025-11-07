@@ -43,6 +43,18 @@
     .row input,.row select,.row textarea{width:100%;padding:.55rem;border-radius:.5rem;border:1px solid rgba(255,255,255,.1);background:var(--bg);color:var(--fg)}
     .row textarea{grid-column:1/-1;min-height:70px}
     @media (max-width:720px){.row{grid-template-columns:1fr}}
+
+    /* Bottom panel (sticks to bottom while scrolling) */
+    .panel-bottom{
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+      border-top: 1px solid rgba(255,255,255,.12);
+      margin: 1rem auto 0;
+    }
+    [data-theme='light'] .panel-bottom{
+      border-top-color: rgba(0,0,0,.08);
+    }
   </style>
 </head>
 <body>
@@ -77,33 +89,6 @@
       <span class="chip" data-tag="Graph">Graph</span>
       <span class="chip" data-tag="Self-Hosting">Self-Hosting</span>
     </div>
-  </div>
-
-  <!-- Add/Import Panel -->
-  <div class="panel">
-    <h3>➕ Add or Import Items</h3>
-    <div class="row">
-      <select id="add-category">
-        <option>Core Infrastructure</option>
-        <option>Full Stack Development</option>
-        <option>General AI Agents</option>
-        <option>R&D Agents</option>
-        <option>Web Automation Agents</option>
-        <option>Deployment & Infrastructure</option>
-        <option>Self-Hosting Options</option>
-      </select>
-      <input id="add-sub" placeholder="Subcategory (e.g., Database, API Framework)" />
-      <input id="add-product" placeholder="Product name (e.g., Pydantic)" />
-      <input id="add-alts" placeholder="Alternatives (comma-separated)" />
-      <textarea id="add-features" placeholder="Features/notes"></textarea>
-      <button id="add-btn">Add Item</button>
-    </div>
-    <details class="group">
-      <summary>📥 Bulk import (paste one per line: Product — Features; Alternatives: a,b,c)</summary>
-      <textarea id="bulk" placeholder="Example:\nPydantic — Data validation and settings management; Alternatives: Marshmallow\nReact — Component-based UI library; Alternatives: Vue, Svelte"></textarea>
-      <div style="margin-top:.6rem"><button id="bulk-btn">Import Lines</button></div>
-      <div class="meta">Tip: Imported items go to the section currently expanded or to “Full Stack Development / General” if none.</div>
-    </details>
   </div>
 
   <main id="grid">
@@ -192,7 +177,36 @@
     </section>
   </main>
 
-  <footer class="meta">Press <b>/</b> to focus search • Filters & theme persist • Use the Add/Import panel to include anything missing from the PNG.</footer>
+  <!-- Add/Import Panel (moved to bottom) -->
+  <div class="panel panel-bottom" role="region" aria-label="Add or Import Items">
+    <h3>➕ Add or Import Items</h3>
+    <div class="row">
+      <select id="add-category">
+        <option>Core Infrastructure</option>
+        <option>Full Stack Development</option>
+        <option>General AI Agents</option>
+        <option>R&D Agents</option>
+        <option>Web Automation Agents</option>
+        <option>Deployment & Infrastructure</option>
+        <option>Self-Hosting Options</option>
+      </select>
+      <input id="add-sub" placeholder="Subcategory (e.g., Database, API Framework)" />
+      <input id="add-product" placeholder="Product name (e.g., Pydantic)" />
+      <input id="add-alts" placeholder="Alternatives (comma-separated)" />
+      <textarea id="add-features" placeholder="Features/notes"></textarea>
+      <button id="add-btn">Add Item</button>
+    </div>
+    <details class="group">
+      <summary>📥 Bulk import (paste one per line: Product — Features; Alternatives: a,b,c)</summary>
+      <textarea id="bulk" placeholder="Example:
+Pydantic — Data validation and settings management; Alternatives: Marshmallow
+React — Component-based UI library; Alternatives: Vue, Svelte"></textarea>
+      <div style="margin-top:.6rem"><button id="bulk-btn">Import Lines</button></div>
+      <div class="meta">Tip: Imported items go to the section currently expanded or to “Full Stack Development / General” if none.</div>
+    </details>
+  </div>
+
+  <footer class="meta">Press <b>/</b> to focus search • Filters & theme persist • </footer>
 
   <script>
     const themeBtn = document.getElementById('theme');
