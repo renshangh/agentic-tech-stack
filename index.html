@@ -3,273 +3,610 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agentic Engineering Tech Stack Dashboard</title>
+  <title>Agentic Engineering Tech Stack</title>
+  <meta name="description" content="My Agentic Engineering Tech Stack — interactive Notion-style dashboard with search, tags, collapsible sections, and theme toggle." />
   <style>
     :root {
       --bg-color: #0f1117;
       --text-color: #e4e6eb;
+      --muted-color: #b7bbc7;
       --card-bg: #1a1c23;
       --accent: #00e0b8;
       --accent-light: #72f5e3;
+      --shadow: rgba(0, 0, 0, 0.25);
     }
     [data-theme='light'] {
       --bg-color: #f5f7fa;
       --text-color: #1c1e21;
+      --muted-color: #3c4048;
       --card-bg: #ffffff;
       --accent: #009f8e;
       --accent-light: #4fd1c5;
+      --shadow: rgba(0, 0, 0, 0.12);
     }
+    * { box-sizing: border-box; }
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial;
       background-color: var(--bg-color);
       color: var(--text-color);
       margin: 0;
-      padding: 2rem;
+      padding: 2rem 1.25rem 4rem;
       transition: background 0.3s ease, color 0.3s ease;
+      line-height: 1.6;
+    }
+    header {
+      max-width: 1100px;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
     }
     h1 {
       color: var(--accent);
-      text-align: center;
-      margin-bottom: 2rem;
+      margin: 0.2rem 0 0.4rem;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      letter-spacing: 0.25px;
     }
-    section {
-      background: var(--card-bg);
-      padding: 1rem 1.5rem;
-      border-radius: 1rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      transition: background 0.3s ease;
+    .sub {
+      color: var(--muted-color);
+      font-size: 0.95rem;
+      margin-top: 0.2rem;
     }
-    summary {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--accent);
-      cursor: pointer;
-      margin-bottom: 0.5rem;
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
     }
-    details[open] summary::after {
-      content: ' ▲';
-    }
-    details summary::after {
-      content: ' ▼';
-      font-size: 0.8rem;
-      color: var(--accent-light);
-    }
-    ul {
-      list-style: none;
-      padding-left: 1rem;
-    }
-    li::before {
-      content: '⚡ ';
-      color: var(--accent);
-    }
-    .subcategory h3 {
-      color: var(--accent-light);
-      font-size: 1.1rem;
-      margin-bottom: 0.3rem;
-    }
-    #searchBar {
-      width: 100%;
-      padding: 0.7rem;
-      border-radius: 0.5rem;
+    button, .chip {
+      background: var(--accent);
+      color: var(--bg-color);
       border: none;
+      border-radius: 0.6rem;
+      padding: 0.55rem 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .06s ease, background .2s ease;
+      box-shadow: 0 4px 10px var(--shadow);
+    }
+    button:hover, .chip:hover { background: var(--accent-light); }
+    button:active { transform: translateY(1px); }
+    #search {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0.6rem auto 1rem;
+      display: block;
+      padding: 0.8rem 0.9rem;
+      border-radius: 0.65rem;
+      border: 1px solid transparent;
       background: var(--card-bg);
       color: var(--text-color);
-      margin-bottom: 1.5rem;
       font-size: 1rem;
+      outline: none;
+      transition: border .2s ease, box-shadow .2s ease;
+      box-shadow: 0 4px 10px var(--shadow);
     }
+    #search::placeholder { color: var(--muted-color); }
+    #search:focus { border-color: var(--accent-light); box-shadow: 0 0 0 4px rgba(114,245,227,0.15); }
     .tags {
+      max-width: 1100px;
+      margin: 0 auto 1rem;
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-bottom: 1rem;
     }
-    .tag {
+    .chip {
+      background: var(--card-bg);
+      color: var(--text-color);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .chip.active {
       background: var(--accent);
       color: var(--bg-color);
-      border-radius: 0.5rem;
-      padding: 0.3rem 0.6rem;
+      border-color: transparent;
+    }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    section {
+      background: var(--card-bg);
+      padding: 0.8rem 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px var(--shadow);
+    }
+    summary {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent);
       cursor: pointer;
-      font-weight: 500;
-      transition: all 0.3s ease;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.35rem 0.2rem;
+      user-select: none;
     }
-    .tag:hover {
-      background: var(--accent-light);
+    summary::marker { content: ''; }
+    .caret { color: var(--accent-light); font-size: 0.9rem; opacity: 0.9; }
+    details[open] .caret { transform: rotate(180deg); }
+    .group {
+      margin: 0.4rem 0 0.6rem;
+      border-top: 1px dashed rgba(255,255,255,0.12);
+      padding-top: 0.6rem;
     }
-    #themeToggle {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      background: var(--accent);
-      color: var(--bg-color);
-      border: none;
-      border-radius: 0.5rem;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
+    .group h3 {
+      color: var(--accent-light);
+      margin: 0.1rem 0 0.35rem;
+      font-size: 1.05rem;
     }
-    #themeToggle:hover {
-      background: var(--accent-light);
+    ul {
+      margin: 0.2rem 0 0.6rem 0;
+      padding-left: 1.1rem;
+    }
+    li {
+      margin: 0.2rem 0;
+    }
+    li::marker { color: var(--accent-light); }
+    .note {
+      color: var(--muted-color);
+      font-size: 0.95rem;
+      margin: 0.15rem 0 0.4rem 0;
+    }
+    footer {
+      max-width: 1100px;
+      margin: 2rem auto;
+      color: var(--muted-color);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .toolbar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      max-width: 1100px;
+      margin: 0 auto 1rem;
+    }
+    @media (min-width: 720px) {
+      .toolbar { flex-direction: row; justify-content: space-between; align-items: center; }
     }
   </style>
 </head>
 <body>
-  <button id="themeToggle">🌙 Light Mode</button>
-  <h1>🧠 My Agentic Engineering Tech Stack</h1>
+  <header>
+    <div>
+      <h1>🧠 My Agentic Engineering Tech Stack</h1>
+      <div class="sub">Interactive, Notion-style dashboard — search, tags, collapsible sections, and theme toggle.</div>
+    </div>
+    <div class="controls">
+      <button id="theme">🌙 Light Mode</button>
+      <button id="reset">↺ Reset Filters</button>
+    </div>
+  </header>
 
-  <input type="text" id="searchBar" placeholder="🔍 Search tools or categories..." />
-
-  <div class="tags">
-    <div class="tag" onclick="filterTag('AI')">AI</div>
-    <div class="tag" onclick="filterTag('Database')">Database</div>
-    <div class="tag" onclick="filterTag('Deployment')">Deployment</div>
-    <div class="tag" onclick="filterTag('Frontend')">Frontend</div>
-    <div class="tag" onclick="filterTag('Agents')">Agents</div>
-    <div class="tag" onclick="filterTag('Infrastructure')">Infrastructure</div>
+  <div class="toolbar">
+    <input id="search" type="text" placeholder="🔍 Search tools, categories, or notes..." />
+    <div class="tags" id="tags">
+      <span class="chip" data-tag="AI">AI</span>
+      <span class="chip" data-tag="Agents">Agents</span>
+      <span class="chip" data-tag="Database">Database</span>
+      <span class="chip" data-tag="Vector">Vector</span>
+      <span class="chip" data-tag="Frontend">Frontend</span>
+      <span class="chip" data-tag="API">API</span>
+      <span class="chip" data-tag="Deployment">Deployment</span>
+      <span class="chip" data-tag="Infra">Infra</span>
+      <span class="chip" data-tag="Self-Hosting">Self-Hosting</span>
+      <span class="chip" data-tag="Observability">Observability</span>
+      <span class="chip" data-tag="Auth">Auth</span>
+      <span class="chip" data-tag="Payments">Payments</span>
+      <span class="chip" data-tag="Testing">Testing</span>
+      <span class="chip" data-tag="Browser">Browser</span>
+      <span class="chip" data-tag="Search">Search</span>
+      <span class="chip" data-tag="Graph">Graph</span>
+    </div>
   </div>
 
-  <section data-tags="Infrastructure Database">
-    <details>
-      <summary>⚙️ Core Infrastructure</summary>
-      <div class="subcategory">
-        <h3>🗄️ Database</h3>
-        <ul>
-          <li>PostgreSQL — Primary structured data store</li>
-          <li>PgVector — Vector extension for similarity search</li>
-          <li>Neon / Supabase / Timescale — Cloud-native scalable alternatives</li>
-        </ul>
-      </div>
-      <div class="subcategory">
-        <h3>🧠 Caching</h3>
-        <ul>
-          <li>Redis — Caching and pub/sub backbone</li>
-          <li>Upstash — Serverless Redis alternative</li>
-        </ul>
-      </div>
-    </details>
-  </section>
+  <main id="grid">
+    <!-- CORE INFRASTRUCTURE -->
+    <section data-tags="Infra Database Vector Caching API">
+      <details open>
+        <summary>⚙️ Core Infrastructure <span class="caret">▼</span></summary>
 
-  <section data-tags="Frontend API Development">
-    <details>
-      <summary>💻 Full Stack Development</summary>
-      <div class="subcategory">
-        <h3>⚡ API Framework</h3>
-        <ul>
-          <li>FastAPI — Modern async backend</li>
-          <li>Express.js — Lightweight Node.js alternative</li>
-        </ul>
-      </div>
-      <div class="subcategory">
-        <h3>🎨 Frontend Libraries</h3>
-        <ul>
-          <li>React / Next.js / Vue — UI frameworks</li>
-          <li>Tailwind CSS / Shadcn UI — Styling and components</li>
-        </ul>
-      </div>
-    </details>
-  </section>
+        <div class="group">
+          <h3>🗄️ Database</h3>
+          <ul>
+            <li>PostgreSQL — primary structured data store</li>
+            <li>PgVector — vector extension for similarity search</li>
+            <li>Neon / Supabase / Timescale — cloud-native alternatives for scale & realtime</li>
+          </ul>
+        </div>
 
-  <section data-tags="Agents AI">
-    <details>
-      <summary>🤖 General AI Agents</summary>
-      <div class="subcategory">
-        <h3>🧩 Frameworks</h3>
-        <ul>
-          <li>LangChain / CrewAI / AutoGPT — Agent orchestration</li>
-          <li>Semantic Kernel / MCP Servers — Tool integration</li>
-        </ul>
-      </div>
-    </details>
-  </section>
+        <div class="group">
+          <h3>🧠 Caching</h3>
+          <ul>
+            <li>Redis — caching & pub/sub backbone</li>
+            <li>Upstash — serverless Redis</li>
+          </ul>
+        </div>
 
-  <section data-tags="R&D AI Data">
-    <details>
-      <summary>🔬 R&D Agents</summary>
-      <div class="subcategory">
-        <h3>📁 File & Data</h3>
-        <ul>
-          <li>Unstructured / LlamaIndex — Document parsing</li>
-          <li>PgVector / Pinecone — Vector storage</li>
-        </ul>
-      </div>
-      <div class="subcategory">
-        <h3>🌍 Web Search</h3>
-        <ul>
-          <li>Brave / Tavily / SerpAPI — Real-time web queries</li>
-        </ul>
-      </div>
-    </details>
-  </section>
+        <div class="group">
+          <h3>🤖 AI Coding</h3>
+          <ul>
+            <li>Claude Code / Cursor / Continue / Windsurf — AI-assisted coding</li>
+            <li>OpenAI / Anthropic APIs — foundation LLM endpoints</li>
+          </ul>
+        </div>
 
-  <section data-tags="Deployment Infrastructure">
-    <details>
-      <summary>🚀 Deployment & Infrastructure</summary>
-      <div class="subcategory">
-        <h3>☁️ Deployment</h3>
-        <ul>
-          <li>Render / Railway / Fly.io — Managed hosting</li>
-        </ul>
-      </div>
-      <div class="subcategory">
-        <h3>🐳 Containerization</h3>
-        <ul>
-          <li>Docker / Podman — Containers for reproducibility</li>
-        </ul>
-      </div>
-      <div class="subcategory">
-        <h3>🔄 CI/CD</h3>
-        <ul>
-          <li>GitHub Actions — Testing & deployment automation</li>
-        </ul>
-      </div>
-    </details>
-  </section>
+        <div class="group">
+          <h3>🧩 Prototyping</h3>
+          <ul>
+            <li>Replit / Observable / Jupyter — fast prototyping & visualization</li>
+            <li>Langflow — visual builder for agent pipelines</li>
+          </ul>
+        </div>
+      </details>
+    </section>
 
-  <section data-tags="Self-Hosting Infrastructure">
-    <details>
-      <summary>🏠 Self-Hosting Options</summary>
-      <div class="subcategory">
-        <h3>💽 Local Platforms</h3>
-        <ul>
-          <li>Open WebUI / Ollama — Local LLM management</li>
-          <li>ChromaDB / Qdrant — Local vector search</li>
-        </ul>
-      </div>
-    </details>
-  </section>
+    <!-- FULL STACK DEVELOPMENT -->
+    <section data-tags="Frontend API Database Auth Payments Observability">
+      <details>
+        <summary>💻 Full Stack Development <span class="caret">▼</span></summary>
+
+        <div class="group">
+          <h3>⚡ API Framework</h3>
+          <ul>
+            <li>FastAPI — async Python API</li>
+            <li>Express.js — lightweight Node.js backend</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🗄️ Database & ORM</h3>
+          <ul>
+            <li>PostgreSQL — unified backend storage</li>
+            <li>Prisma — ORM with schema management & typing</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🔐 Authentication</h3>
+          <ul>
+            <li>Supabase Auth — simple JWT-based auth</li>
+            <li>Auth0 / Clerk / Firebase Auth — enterprise identity providers</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🎨 Frontend Libraries</h3>
+          <ul>
+            <li>React / Next.js / Vue — UI frameworks</li>
+            <li>Tailwind CSS — utility-first styling</li>
+            <li>Radix UI / Shadcn UI — headless components</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🧩 Build / App Starters</h3>
+          <ul>
+            <li>Vite — fast build tool</li>
+            <li>Streamlit / Gradio / Lovable — no/low-code AI app frameworks</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>💳 Payments & Monitoring</h3>
+          <ul>
+            <li>Stripe — payment processing</li>
+            <li>Sentry / LogRocket — observability and error monitoring</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- GENERAL AI AGENTS -->
+    <section data-tags="AI Agents Observability">
+      <details>
+        <summary>🤖 General AI Agents <span class="caret">▼</span></summary>
+
+        <div class="group">
+          <h3>🧩 AI Agent Frameworks</h3>
+          <ul>
+            <li>PyAutoGen / CrewAI / BabyAGI / LangGraph — agent orchestration & planning</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🧬 Multi-Agent Frameworks</h3>
+          <ul>
+            <li>LangChain / AutoGPT / AgentVerse — multi-agent coordination</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🧰 Agent Tooling</h3>
+          <ul>
+            <li>OpenDevin / MCP Servers / Semantic Kernel — tool/skill integration</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🔍 Agent Observability</h3>
+          <ul>
+            <li>LangSmith / Helicone / Phoenix — tracing, evals, and telemetry</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- R&D AGENTS -->
+    <section data-tags="AI R&D Vector Graph Database Search">
+      <details>
+        <summary>🔬 R&D Agents <span class="caret">▼</span></summary>
+
+        <div class="group">
+          <h3>📁 File Extraction & Chunking</h3>
+          <ul>
+            <li>Unstructured / LangChain / LlamaIndex — document parsing & embeddings</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🌐 Website Data Extraction</h3>
+          <ul>
+            <li>Crawl4AI / Playwright / Apify — scraping & structured extraction</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🧮 Vector Databases</h3>
+          <ul>
+            <li>Postgres (PgVector) — unified store</li>
+            <li>Pinecone / Weaviate / Milvus — dedicated vector search DBs</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🧠 Long-Term Memory</h3>
+          <ul>
+            <li>MongoDB — persistent agent memory</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🔗 Graph Databases</h3>
+          <ul>
+            <li>Neo4j / ArangoDB — relationship reasoning</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>📚 Knowledge Graph Frameworks</h3>
+          <ul>
+            <li>Grakn / GraphGPT / NetworkX — knowledge extraction & linking</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🧪 RAG Evaluation</h3>
+          <ul>
+            <li>Ragas / DeepEval / TruLens — retrieval QA & eval frameworks</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🌍 Web Search</h3>
+          <ul>
+            <li>Brave / Bing / Tavily / SerpAPI — live data retrieval</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- WEB AUTOMATION AGENTS -->
+    <section data-tags="AI Agents Browser Automation Search">
+      <details>
+        <summary>🌐 Web Automation Agents <span class="caret">▼</span></summary>
+
+        <div class="group">
+          <h3>🧭 AI Browser Control</h3>
+          <ul>
+            <li>Browserbase / Puppeteer / Selenium — automated web interactions</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>⚙️ Browser Automation</h3>
+          <ul>
+            <li>Playwright / Crawl4AI — headless browsing & pipelines</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🧲 Social Scraping</h3>
+          <ul>
+            <li>Apify / Instaloader / Twint — social/public data collection</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- DEPLOYMENT & INFRA -->
+    <section data-tags="Deployment Infra Testing Observability">
+      <details>
+        <summary>🚀 Deployment & Infrastructure <span class="caret">▼</span></summary>
+
+        <div class="group">
+          <h3>☁️ Deployment Platforms</h3>
+          <ul>
+            <li>Render / Railway / Fly.io — managed app hosting</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🧭 Virtual / GPU Platforms</h3>
+          <ul>
+            <li>RunPod / DigitalOcean / HuggingFace Spaces — cloud GPU & compute</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🐳 Containerization</h3>
+          <ul>
+            <li>Docker / Podman — containerized environments</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🔄 CI/CD</h3>
+          <ul>
+            <li>GitHub Actions — workflows for testing & deploy</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🧪 Testing</h3>
+          <ul>
+            <li>PyTest / Jest — Python & JS testing</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🤖 AI Code Review</h3>
+          <ul>
+            <li>CodeRabbit / Codium / Aider — AI PR/code review</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- SELF HOSTING -->
+    <section data-tags="Self-Hosting Infra Vector Security">
+      <details>
+        <summary>🏠 Self-Hosting Options <span class="caret">▼</span></summary>
+
+        <div class="group">
+          <h3>💽 Local LLM Platforms</h3>
+          <ul>
+            <li>Open WebUI / Ollama — run & manage local LLMs</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🔍 Local Embeddings & Search</h3>
+          <ul>
+            <li>Sentence Transformers / ChromaDB / Qdrant — local semantic search</li>
+          </ul>
+        </div>
+
+        <div class="group">
+          <h3>🔐 HTTPS/TLS & Reverse Proxy</h3>
+          <ul>
+            <li>Caddy / Nginx — secure serving & SSL termination</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    Built for quick iteration. Tip: press <strong>/</strong> to focus search. Your theme & filters persist automatically.
+  </footer>
 
   <script>
-    const searchBar = document.getElementById('searchBar');
-    const sections = document.querySelectorAll('section');
-    const themeToggle = document.getElementById('themeToggle');
+    // --- Theme persistence ---
+    const themeBtn = document.getElementById('theme');
+    const resetBtn = document.getElementById('reset');
+    const search = document.getElementById('search');
+    const chips = Array.from(document.querySelectorAll('.chip'));
+    const sections = Array.from(document.querySelectorAll('main section'));
 
-    // Search functionality
-    searchBar.addEventListener('input', function() {
-      const term = this.value.toLowerCase();
-      sections.forEach(section => {
-        section.style.display = section.innerText.toLowerCase().includes(term) ? 'block' : 'none';
+    const STORAGE_KEY = 'agentic-stack:v1';
+    const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+    function applyState() {
+      // theme
+      if (state.theme === 'light') {
+        document.body.setAttribute('data-theme', 'light');
+        themeBtn.textContent = '🌑 Dark Mode';
+      } else {
+        document.body.removeAttribute('data-theme');
+        themeBtn.textContent = '🌙 Light Mode';
+      }
+      // search
+      search.value = state.query || '';
+      // tags
+      const activeTags = new Set(state.tags || []);
+      chips.forEach(chip => {
+        chip.classList.toggle('active', activeTags.has(chip.dataset.tag));
+      });
+      filter();
+    }
+
+    function persist() {
+      const active = chips.filter(c => c.classList.contains('active')).map(c => c.dataset.tag);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        theme: document.body.getAttribute('data-theme') === 'light' ? 'light' : 'dark',
+        query: search.value.trim(),
+        tags: active
+      }));
+    }
+
+    themeBtn.addEventListener('click', () => {
+      const isLight = document.body.getAttribute('data-theme') === 'light';
+      if (isLight) {
+        document.body.removeAttribute('data-theme');
+        themeBtn.textContent = '🌙 Light Mode';
+      } else {
+        document.body.setAttribute('data-theme', 'light');
+        themeBtn.textContent = '🌑 Dark Mode';
+      }
+      persist();
+    });
+
+    resetBtn.addEventListener('click', () => {
+      // clear search and tags
+      search.value = '';
+      chips.forEach(c => c.classList.remove('active'));
+      filter();
+      persist();
+    });
+
+    // Chip toggle
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chip.classList.toggle('active');
+        filter();
+        persist();
       });
     });
 
-    // Tag filter
-    function filterTag(tag) {
-      sections.forEach(section => {
-        section.style.display = section.dataset.tags.includes(tag) ? 'block' : 'none';
+    // Search input + keyboard focus with '/'
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== search) {
+        e.preventDefault();
+        search.focus();
+      }
+    });
+    search.addEventListener('input', () => { filter(); persist(); });
+
+    function filter() {
+      const q = search.value.toLowerCase();
+      const activeTags = chips.filter(c => c.classList.contains('active')).map(c => c.dataset.tag);
+
+      sections.forEach(sec => {
+        const text = sec.innerText.toLowerCase();
+        const matchesSearch = !q || text.includes(q);
+        const tags = (sec.getAttribute('data-tags') || '').split(/\\s+/).filter(Boolean);
+        const matchesTags = activeTags.length === 0 || activeTags.every(t => tags.includes(t));
+        sec.style.display = matchesSearch && matchesTags ? 'block' : 'none';
       });
     }
 
-    // Theme toggle
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = document.body.getAttribute('data-theme');
-      if (currentTheme === 'light') {
-        document.body.removeAttribute('data-theme');
-        themeToggle.textContent = '🌙 Light Mode';
-      } else {
-        document.body.setAttribute('data-theme', 'light');
-        themeToggle.textContent = '🌑 Dark Mode';
-      }
-    });
+    // Initialize
+    applyState();
   </script>
 </body>
 </html>
